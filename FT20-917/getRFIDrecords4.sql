@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `test`(IN numOrder VARCHAR(50),IN imprimir INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRFIDrecords4`(IN numOrder VARCHAR(50),IN imprimir int, IN lineas VARCHAR(100))
 BEGIN
 DECLARE fin INT DEFAULT 0;
 DECLARE var VARCHAR(50);
@@ -26,10 +26,7 @@ END IF;
 end LOOP ciclo_loop ;
 CLOSE nombreCursor;
 SET CADENA = SUBSTRING(CADENA,     1,    CHAR_LENGTH(CADENA) - 1);
-SET @QUERYT = CONCAT("SELECT PRINT.ID as REG,r.* FROM PRINT, JSON_TABLE(DATOS,'$'COLUMNS (",CADENA,")) AS r where PROD_STATUS='1' and ORDER_ID='",numOrder,"' ORDER BY ID LIMIT ",imprimir,";");
-PREPARE stmt FROM @QUERYT;
-EXECUTE stmt;
-SET @QUERYT = CONCAT("UPDATE PRINT SET PROD_STATUS='2' WHERE PROD_STATUS='1' and ORDER_ID='",numOrder,"' ORDER BY ID LIMIT ",imprimir,";");
+SET @QUERYT = CONCAT("SELECT PRINT.ID as REG,r.* FROM PRINT, JSON_TABLE(DATOS,'$'COLUMNS (",CADENA,")) AS r where PROD_STATUS='1' and ORDER_ID='",numOrder,"' ",lineas," ORDER BY ID LIMIT ",imprimir,";");
 PREPARE stmt FROM @QUERYT;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
@@ -43,14 +40,12 @@ IF (fin=1) THEN
   LEAVE ciclo_loop;
 END IF;
 /*----------------------------------------------------------------------*/
- IF(var!='EPC_1'and var!='EPC_2') THEN
     SET CADENA = CONCAT(CADENA," ",var," VARCHAR(50) PATH '$.",var,"'," );
- END IF;   
 /*----------------------------------------------------------------------*/
 end LOOP ciclo_loop ;
 CLOSE nombreCursor;
 SET CADENA = SUBSTRING(CADENA,     1,    CHAR_LENGTH(CADENA) - 1);
-SET @QUERYT = CONCAT("SELECT PRINT.ID as REG,r.* FROM PRINT, JSON_TABLE(DATOS,'$'COLUMNS (",CADENA,")) AS r where PROD_STATUS='1' and ORDER_ID='",numOrder,"' ORDER BY ID LIMIT 3;");
+SET @QUERYT = CONCAT("SELECT PRINT.ID as REG,r.* FROM PRINT, JSON_TABLE(DATOS,'$'COLUMNS (",CADENA,")) AS r where PROD_STATUS='1' and ORDER_ID='",numOrder,"' ",lineas," ORDER BY ID LIMIT 3;");
 PREPARE stmt FROM @QUERYT;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;

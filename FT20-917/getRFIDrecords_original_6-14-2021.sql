@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `test`(IN numOrder VARCHAR(50),IN imprimir INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRFIDrecords_original_6-14-2021`(IN numOrder VARCHAR(50),IN imprimir INT)
 BEGIN
 DECLARE fin INT DEFAULT 0;
 DECLARE var VARCHAR(50);
