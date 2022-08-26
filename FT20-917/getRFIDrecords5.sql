@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `test`(IN numOrder VARCHAR(50),IN imprimir INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRFIDrecords5`(IN numOrder VARCHAR(50),IN imprimir INT)
 BEGIN
 DECLARE fin INT DEFAULT 0;
 DECLARE var VARCHAR(50);
@@ -55,4 +55,5 @@ PREPARE stmt FROM @QUERYT;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 END IF;
+
 END
